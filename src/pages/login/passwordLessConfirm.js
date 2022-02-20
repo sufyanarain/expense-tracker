@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef } from 'react'
 import { getAuth, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
 import { doc, setDoc, getFirestore, getDoc, addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useHistory } from "react-router-dom";
+import useLoader from '../../components/customHooks/useLoader';
 
 
 const PasswordLessConfirm = () => {
+    const [loader, showLoader, hideLoader] = useLoader();
     const history = useHistory();
     const auth = getAuth();
     const db = getFirestore();
@@ -37,14 +39,17 @@ const PasswordLessConfirm = () => {
             console.log("user already exists");
         }
         history.push('/dashboard');
+        hideLoader()
     }
 
 
     let email = window.localStorage.getItem('emailForSignIn');
     useEffect(() => {
+        showLoader()
         if (isSignInWithEmailLink(auth, window.location.href)) { // check if user is signed in with email link
             if (!email) {
                 email = window.prompt('Please provide your email for confirmation');
+                hideLoader()
             }
             signInWithEmailLink(auth, email, window.location.href)
                 .then((result) => {
@@ -52,11 +57,13 @@ const PasswordLessConfirm = () => {
 
                     setUserDataToFirestore(result.user); // set user data to firestore
                     console.log('data sent to firestore function');
+                    
 
                 })
                 .catch((error) => {
                     // setIsAuthenticated(true)
                     alert(error.message)
+                    hideLoader()
                 });
         }
         return () => {
@@ -66,7 +73,7 @@ const PasswordLessConfirm = () => {
 
     return (
         <div className='login-main-div'>
-
+            {loader}
            {!email && <div className='login-right-sec'>
                 <p className='login-heading'>Wrong Email ! Please Input Correct Email !</p>
                 <button className='passwordless-error-btn' onClick={() => { window.location.reload(); }}>Input again</button>

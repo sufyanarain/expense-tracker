@@ -7,6 +7,7 @@
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^13.5.0",
     "firebase": "^9.6.7",
+    "firebase-tools": "^10.2.1",
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -38,5 +39,18 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sufyanarain/expense-tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sufyanarain/expense-tracker/issues"
+  },
+  "homepage": "https://github.com/sufyanarain/expense-tracker#readme"
 }

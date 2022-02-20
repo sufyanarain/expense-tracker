@@ -1,18 +1,14 @@
 import React, { useContext,useState } from 'react'
 import SignupForm from './SignupForm'
 import { Link } from 'react-router-dom'
-import { GoogleAuthProvider, getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { doc, serverTimestamp, setDoc, getFirestore, addDoc, collection, getDoc } from "firebase/firestore";
 import { FacebookAuthProvider } from "firebase/auth";
 import { useHistory } from 'react-router-dom';
-import userProfileContext from '../../components/context/userProfileContext';
-
-
 import './signup.css'
 
 const Signup = () => {
     const history = useHistory();
-    const userProfile = useContext(userProfileContext);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
@@ -31,7 +27,6 @@ const Signup = () => {
                 expenses: [],
                 createdAt: serverTimestamp(),
             })
-            console.log("user_profile added to firestore")
 
             await setDoc(doc(db, "users", user.uid), {
                 name: user.displayName,
@@ -40,14 +35,12 @@ const Signup = () => {
                 uid: user.uid,
                 createdAt: serverTimestamp(),
             });
-            console.log("user added to firestore");
         } else {
             history.push('/dashboard');
             console.log("user already exists");
         }
         setLoading(false)
         history.push('/dashboard');
-
 
     }
 
@@ -82,15 +75,10 @@ const Signup = () => {
             user.displayName = name;
             setUserDataToFirestore(user)
         } catch (err) {
-            console.log(err,"dd",err.code,err.message);
             setError(err.code)
             setLoading(false)
         }
     }
-
-
-
-
 
 
 

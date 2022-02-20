@@ -50,7 +50,7 @@ const Login = () => {
             const user = await signInWithPopup(auth, provider)
             setUserDataToFirestore(user.user);
         } catch (err) {
-            setError(err.message)
+            setError(err.code)
         }
     }
 
@@ -60,7 +60,7 @@ const Login = () => {
             const user = await signInWithPopup(auth, provider)
             setUserDataToFirestore(user.user);
         } catch (err) {
-            setError(err.message)
+            setError(err.code)
         }
 
     }
@@ -73,7 +73,7 @@ const Login = () => {
             history.push('/dashboard');
             setLoading(false)
         } catch (err) {
-            setError(err.message)
+            setError(err.code)
             console.log(err);
             setLoading(false)
         }
