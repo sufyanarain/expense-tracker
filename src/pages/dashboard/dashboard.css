@@ -49,6 +49,24 @@
   background-color: #f1f1f1;
 }
 
+
+.expense-delete{
+  cursor: pointer;
+}
+
+.expense-delete:hover{
+  color: rgb(247, 53, 53);
+}
+
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
+
+
 .dashboard-main-div {
   background-color: #f8f9fa;
   position: relative;
@@ -126,7 +144,7 @@
 
 }
 
-.add-input-btn{
+.add-input-btn {
   margin: 0;
 }
 

@@ -5,7 +5,7 @@ import DisplayTransactions from './displayTransactions/DisplayTransactions'
 import Modal from './displayTransactions/modal/Modal'
 import AuthContext from '../../components/context/AuthContext'
 import userProfileContext from '../../components/context/userProfileContext'
-import { doc, updateDoc, arrayUnion, getFirestore, onSnapshot, serverTimestamp, getDocs, addDoc, collection } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion, getFirestore, onSnapshot, serverTimestamp, getDocs, addDoc, collection, getAuth, signOut } from "firebase/firestore";
 import useLoader from '../../components/customHooks/useLoader'
 import Loader from '../../components/loader/Loader'
 
@@ -17,7 +17,6 @@ const Dashboard = () => {
     const [transactions, setTransactions] = useState([]);
     const [userObjFromFirestore, setUserObjFromFirestore] = useState({});
     const [loading, setLoading] = useState(false);
-
     const addCategory = useRef(null);
     const nameInput = useRef(null)
 
@@ -69,6 +68,21 @@ const Dashboard = () => {
 
     }
 
+    const expenseOptionHandler = async ({ id, category, description, amount }, index) => {
+        console.log('edit expense', id, category, description, amount, index);
+        const washingtonRef = doc(db, "cities", "DC");
+
+        // Atomically add a new region to the "regions" array field.
+        await updateDoc(washingtonRef, {
+            regions: arrayUnion("greater_virginia")
+        });
+
+        // Atomically remove a region from the "regions" array field.
+        await updateDoc(washingtonRef, {
+            regions: arrayRemove("east_coast")
+        });
+    }
+
     useEffect(() => {
         showLoader()
         userProfile && onSnapshot(doc(db, "users_profile", `${userProfile}`), (doc) => { //get user data from firestore
@@ -84,11 +98,14 @@ const Dashboard = () => {
 
     }, [userProfile])
 
+
+
+
     return (
         <div >
             {loader}
             <Nav />
-            { userObjFromFirestore.name ? <div className='dashboard-main-div'>
+            {userObjFromFirestore.name ? <div className='dashboard-main-div'>
                 <div className='heading-buttons-top-div'>
                     <h3>Expense Management App</h3>
                     <div className='modal-btns'>
@@ -99,7 +116,7 @@ const Dashboard = () => {
                         <Modal userObj={userObjFromFirestore} submitExpenseFuncs={submitExpenseFuncs} />
                     </div>
                 </div>
-                <DisplayTransactions userObj={transactions} />
+                <DisplayTransactions expenseOptionHandler={expenseOptionHandler} userObj={transactions} />
             </div> :
                 <div className='dashboard-main-div'>
                     <div className='update-name-div'>

@@ -7,7 +7,7 @@ import PasswordLessConfirm from "./pages/login/passwordLessConfirm";
 import Dashboard from "./pages/dashboard/Dashboard";
 import AuthContext from "./components/context/AuthContext";
 import userProfileContext from "./components/context/userProfileContext";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged,signOut } from "firebase/auth";
 import { doc, onSnapshot,getFirestore } from "firebase/firestore";
 
 function App() {
@@ -16,10 +16,12 @@ function App() {
   const auth = getAuth();
   const db = getFirestore();
 
+  console.log(userAuthObj);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserAuthObj(user);
+        
       } else {
         setUserAuthObj({});
       }

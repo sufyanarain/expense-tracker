@@ -27,13 +27,31 @@ const Modal = (props) => {
         setCategory(e.target.value)
     }
 
+    console.log(props);
+
+    const modalMain = useRef(null);
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (modalMain.current && !modalMain.current.contains(event.target)) {
+                setShowModal(false)
+                console.log(`outside`);
+            }
+        }
+
+        // Bind the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [props.showPopup])
 
 
 
     return (
         <div> <button className='btn primary modal-add-btn   ' onClick={modalHandler}>+ Add</button>
-            <div className={`modal ${showModal ? 'display-block' : 'display-none'}`} >
-                <section className="modal-main">
+            <div  className={`modal ${showModal ? 'display-block' : 'display-none'}`} >
+                <section ref={modalMain} className="modal-main">
                     <div>
                         <form className='add-transaction-form' onSubmit={formSubmitHandler} id='expense-form'>
                             <label htmlFor="description">Description </label>

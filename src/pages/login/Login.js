@@ -24,7 +24,7 @@ const Login = () => {
                 name: user.displayName,
                 email: user.email,
                 categories: [],
-                expenses: [],
+                expenses: {},
                 createdAt: serverTimestamp(),
             })
             console.log("user_profile added to firestore")
@@ -50,7 +50,7 @@ const Login = () => {
             const user = await signInWithPopup(auth, provider)
             setUserDataToFirestore(user.user);
         } catch (err) {
-            setError(err.code)
+            setError(err.message)
         }
     }
 
@@ -60,7 +60,7 @@ const Login = () => {
             const user = await signInWithPopup(auth, provider)
             setUserDataToFirestore(user.user);
         } catch (err) {
-            setError(err.code)
+            setError(err.message)
         }
 
     }
@@ -73,7 +73,7 @@ const Login = () => {
             history.push('/dashboard');
             setLoading(false)
         } catch (err) {
-            setError(err.code)
+            setError(err.message)
             console.log(err);
             setLoading(false)
         }
